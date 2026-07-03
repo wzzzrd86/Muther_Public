@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>MU/TH/ER — Crew Terminal</title>
+  <meta name="description" content="Crew read-only terminal — receiving transmissions from MU/TH/ER 6000." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="page-crew">
+
+  <!-- Header -->
+  <header class="crew-header">
+    <div class="title">MU/TH/ER // CREW TERMINAL</div>
+    <div class="status">
+      <span id="conn-status" class="offline">■</span>
+      <span id="conn-label">OFFLINE</span>
+    </div>
+  </header>
+
+  <!-- Message log -->
+  <main class="crew-main">
+    <div id="crew-log" aria-live="polite" aria-label="MU/TH/ER transmissions">
+      <div id="idle-cursor-line" style="display:none"><span class="cursor"></span></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="crew-footer">
+    <span>READ-ONLY TERMINAL — TRANSMISSIONS FROM MU/TH/ER 6000</span>
+  </footer>
+
+  <script src="crew.js"></script>
+</body>
+</html>

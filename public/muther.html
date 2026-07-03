@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>MU/TH/ER 6000 OPERATOR INTERFACE</title>
+  <meta name="description" content="MU/TH/ER 6000 operator interface — compose and transmit messages to crew." />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+</head>
+<body id="page-muther">
+
+  <!-- ===== Top Bar ===== -->
+  <header class="muther-topbar">
+    <div class="title">MU/TH/ER</div>
+    <div class="topbar-right">
+      <div id="conn-status">
+        <span id="conn-dot" class="offline">■</span>
+        <span id="conn-label">OFFLINE</span>
+      </div>
+
+      <!-- Operations dropdown -->
+      <div class="dropdown" id="ops-dropdown">
+        <button class="btn btn-primary" id="btn-ops" aria-haspopup="true" aria-expanded="false">
+          OPERATIONS ▾
+        </button>
+        <div class="dropdown-menu hidden" id="ops-menu" role="menu">
+          <button class="dropdown-item" id="op-export" role="menuitem">EXPORT CHAT LOG</button>
+          <button class="dropdown-item" id="op-save"     role="menuitem">SAVE SESSION</button>
+          <button class="dropdown-item" id="op-sessions" role="menuitem">SESSIONS</button>
+          <button class="dropdown-item" id="op-clear"    role="menuitem">CLEAR SESSION</button>
+          <div class="dropdown-separator"></div>
+          <!-- Speed control -->
+          <div class="ops-inline">
+            <span class="speed-label">TRANSMISSION SPEED</span>
+            <div class="speed-row">
+              <span class="slider-minmax">1</span>
+              <input type="range" id="speed-slider" min="1" max="10" value="5" aria-label="Transmission speed" />
+              <span class="slider-minmax">10</span>
+              <span id="speed-val" class="slider-val">5</span>
+            </div>
+          </div>
+          <!-- Crew font size control -->
+          <div class="ops-inline">
+            <span class="speed-label">CREW FONT SIZE</span>
+            <div class="speed-row">
+              <span class="slider-minmax">S</span>
+              <input type="range" id="fontsize-slider" min="14" max="72" value="24" aria-label="Crew font size" />
+              <span class="slider-minmax">L</span>
+              <span id="fontsize-val" class="slider-val">24</span>
+            </div>
+          </div>
+          <!-- Word delay control -->
+          <div class="ops-inline">
+            <span class="speed-label">WORD PAUSE MULTIPLIER</span>
+            <div class="speed-row">
+              <span class="slider-minmax">1x</span>
+              <input type="range" id="worddelay-slider" min="1" max="20" value="3" aria-label="Word pause multiplier" />
+              <span class="slider-minmax">20x</span>
+              <span id="worddelay-val" class="slider-val">3x</span>
+            </div>
+          </div>
+          <div class="dropdown-separator"></div>
+          <!-- All caps toggle -->
+          <div class="toggle-wrap">
+            <label class="toggle" for="allcaps-toggle" title="ALL CAPS">
+              <input type="checkbox" id="allcaps-toggle" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span>ALL CAPS</span>
+          </div>
+          <!-- Light panel theme toggle -->
+          <div class="toggle-wrap">
+            <label class="toggle" for="theme-toggle" title="LIGHT PANEL">
+              <input type="checkbox" id="theme-toggle" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span>LIGHT PANEL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main Two-Panel Layout ===== -->
+  <main class="muther-main">
+
+    <!-- Left — Macro board -->
+    <aside class="macro-panel" aria-label="Macro board">
+      <div class="macro-panel-header">
+        <span class="label">MACROS</span>
+        <button class="btn btn-sm" id="btn-add-macro" aria-label="Add macro">+ ADD MACRO</button>
+      </div>
+      <div id="macros-container"></div>
+    </aside>
+
+    <!-- Right — Chat console -->
+    <section class="chat-panel" aria-label="Chat console">
+      <div id="muther-log" aria-live="polite" aria-label="Message log"></div>
+      <div class="compose-area">
+        <div class="editor-toolbar">
+          <button id="btn-bold" class="btn btn-sm editor-btn btn-bold" title="Bold">[B]</button>
+          <button id="btn-italic" class="btn btn-sm editor-btn btn-italic" title="Italic">[I]</button>
+          <button id="btn-underline" class="btn btn-sm editor-btn btn-underline" title="Underline">[U]</button>
+        </div>
+        <div class="textarea-wrapper">
+          <div id="compose-resizer" title="Drag to resize"></div>
+          <textarea id="compose-input" placeholder="COMPOSE TRANSMISSION..." rows="2" aria-label="Compose message"></textarea>
+        </div>
+        <button class="btn btn-primary" id="btn-send" aria-label="Send transmission">SEND</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Save Session Modal ===== -->
+  <div class="modal-backdrop hidden" id="save-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="save-title">
+      <h2 id="save-title">SAVE SESSION</h2>
+      <div class="field">
+        <label for="save-name-input">SESSION NAME</label>
+        <input type="text" id="save-name-input" placeholder="2026-06-21" />
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-save-cancel">CANCEL</button>
+        <button class="btn btn-primary" id="btn-save-confirm">SAVE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Sessions Modal ===== -->
+  <div class="modal-backdrop hidden" id="session-list-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="session-list-title">
+      <h2 id="session-list-title">SESSIONS</h2>
+      <ul class="session-list" id="session-list" aria-label="Saved sessions"></ul>
+      <div class="actions">
+        <button class="btn" id="btn-session-cancel">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" role="status" aria-live="assertive"></div>
+
+  <script src="muther.js"></script>
+</body>
+</html>

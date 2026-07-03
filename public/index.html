@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>MU/TH/ER 6000 — Role Select</title>
+  <meta name="description" content="MU/TH/ER 6000 Access Terminal" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="page-index">
+
+  <!-- ===== Landing ===== -->
+  <div class="logo-block">
+    <h1 class="logo-title">MU/TH/ER</h1>
+    <div class="logo-subtitle">WEYLAND YUTANI — MODEL 6000</div>
+  </div>
+
+  <div class="role-buttons">
+    <button class="role-btn" id="btn-crew" aria-label="Enter as crew">
+      <span class="role-icon">◈</span>
+      <span>CREW ACCESS</span>
+      <span class="role-desc">Read-only terminal display</span>
+    </button>
+    <button class="role-btn" id="btn-muther" aria-label="Enter as MU/TH/ER operator">
+      <span class="role-icon">⬡</span>
+      <span>MU/TH/ER</span>
+      <span class="role-desc">Operator interface — restricted</span>
+    </button>
+  </div>
+
+  <div class="status-line">
+    <span class="status-dot">■</span>
+    SYSTEM ONLINE — AWAITING AUTHORIZATION
+  </div>
+
+  <!-- ===== Password Modal ===== -->
+  <div class="modal-backdrop hidden" id="pass-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pass-title">
+      <h2 id="pass-title">OPERATOR ACCESS</h2>
+      <p class="modal-sub">AUTHENTICATION REQUIRED — ENTER SECURITY CODE</p>
+      <div class="field">
+        <label for="pass-input">ACCESS CODE</label>
+        <input type="password" id="pass-input" autocomplete="current-password" placeholder="▮▮▮▮▮▮▮▮" />
+        <div id="pass-error"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btn-pass-cancel">CANCEL</button>
+        <button class="btn btn-primary" id="btn-pass-confirm">AUTHENTICATE</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Role selection ---
+    document.getElementById('btn-crew').addEventListener('click', () => {
+      window.location.href = 'crew.html';
+    });
+
+    document.getElementById('btn-muther').addEventListener('click', () => {
+      showPassModal();
+    });
+
+    // --- Password modal ---
+    function showPassModal() {
+      document.getElementById('pass-modal').classList.remove('hidden');
+      document.getElementById('pass-input').focus();
+      document.getElementById('pass-error').textContent = '';
+      document.getElementById('pass-input').value = '';
+    }
+
+    function hidePassModal() {
+      document.getElementById('pass-modal').classList.add('hidden');
+    }
+
+    document.getElementById('btn-pass-cancel').addEventListener('click', hidePassModal);
+
+    document.getElementById('btn-pass-confirm').addEventListener('click', authenticate);
+
+    document.getElementById('pass-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') authenticate();
+    });
+
+    function authenticate() {
+      const pass = document.getElementById('pass-input').value;
+      if (!pass) {
+        document.getElementById('pass-error').textContent = 'ACCESS CODE REQUIRED';
+        return;
+      }
+      // Store password in sessionStorage so muther.html can use it for WS auth
+      sessionStorage.setItem('mutherPass', pass);
+      window.location.href = 'muther.html';
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('pass-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('pass-modal')) hidePassModal();
+    });
+  </script>
+</body>
+</html>
