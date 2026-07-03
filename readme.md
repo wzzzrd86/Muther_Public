@@ -31,3 +31,12 @@ Using the app, you can tune 5 things.
 - **Sessions:** Shows all saved sessions.
   - **Load:** Loads the selected session, repopulates the chat window for both Crew and Muther.
   - **Del:** Deletes the saved session.
+
+# Images
+<img width="1510" height="942" alt="image" src="https://github.com/user-attachments/assets/b84d19a9-6ac4-46e7-a473-b1df3acf9552" />
+<img width="3818" height="1911" alt="image" src="https://github.com/user-attachments/assets/0cacffdf-6131-4e79-9abd-e7816148dbbc" />
+
+
+https://github.com/user-attachments/assets/26e88b99-6446-43f5-bedf-08c98f2b5ba3
+
+
